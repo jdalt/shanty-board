@@ -8,6 +8,16 @@ var paper = new joint.dia.Paper({
   model: graph
 });
 
+var zoomFactor = 1;
+function zoomIn() {
+  zoomFactor *= 1.1;
+  paper.scale(zoomFactor, zoomFactor);
+}
+function zoomOut() {
+  zoomFactor *= .9;
+  paper.scale(zoomFactor, zoomFactor);
+}
+
 var erd = joint.shapes.erd;
 
 var element = function(elm, model, x, y, label) {

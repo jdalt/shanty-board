@@ -1,0 +1,6 @@
+- Style like previous cards with more information (mongo collection, superclasses) 
+- Better linking that visualizes relationships.
+- Links to github.
+- AR models. Color code or db per model.
+- Persist position changes or position map.
+- Filtering Nodes and relationships.
