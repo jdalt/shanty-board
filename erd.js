@@ -26,27 +26,76 @@ var link = function(elm1, elm2) {
   return myLink;
 };
 
-var x_cord = 10;
-var y_cord = 10;
+// Put all models in a hash based class name.
 var classJointHash = {}
 _.each(statNginModels, function(model) {
-  var jointModel = element(erd.Entity, model, x_cord, y_cord, model.name);
-  classJointHash[model.name] = jointModel;
-  model.jointModel = jointModel;
-  if(x_cord < 1200) {
-    x_cord += 200;
-  } else {
-    y_cord += 75;
-    x_cord = 10;
+  classJointHash[model.name] = model;
+});
+
+console.log(classJointHash);
+
+function tourneyDist(model, depth) {
+  model.depth = depth;
+  _.each(model.relations, function(relation) {
+    switch(relation.relationshipType) {
+      case "embedded_in":
+      case "referenced_in":
+        return;
+    }
+    var relateModel = classJointHash[relation.class]
+    if(relateModel && relateModel.depth == null) {
+      tourneyDist(relateModel, depth + 1);
+    }
+  });
+}
+
+tourneyDist(classJointHash["Tournament"], 0);
+
+// Check all the child classes.
+_.each(classJointHash, function(model) {
+  if(model.depth != null)
+    return;
+
+  var supers = _.map(model.superClasses, function(superName) { return classJointHash[superName] });
+  if(supers.length < 1)
+    return;
+
+  var bestSuper = _.find(supers, function(sup) { return sup.depth != null });
+  if(bestSuper) {
+    tourneyDist(model, bestSuper.depth);
   }
+});
+
+var depthCount = {};
+for(var i=0; i<25; i++) {
+  depthCount[i] = 0;
+}
+depthCount[-1] = 0;
+
+var x_cord = 10;
+var y_cord = 10;
+_.each(statNginModels, function(model) {
+  if(model.depth == null) {
+    model.depth = -1;
+  }
+  x_cord = depthCount[model.depth] * 160; // TODO: const
+  if(model.depth == -1) {
+    y_cord = 7 * 300;
+  } else {
+    y_cord = model.depth * 300; // TODO: const
+  }
+
+  var jointModel = element(erd.Entity, model, x_cord, y_cord, model.name);
+  model.jointModel = jointModel;
+
+  depthCount[model.depth]++;
 });
 
 _.each(statNginModels, function(model) {
   _.each(model.relations, function(relation) {
     var relateModel = classJointHash[relation.class]
     if(relateModel) {
-      link(model.jointModel, relateModel).cardinality(relation.relationshipType)
+      link(model.jointModel, relateModel.jointModel).cardinality(relation.relationshipType)
     }
   });
 });
-
