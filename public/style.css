@@ -26,15 +26,6 @@ img.relation {
   padding-right: 3px;
 }
 
-
-/* .relation.referenced_in { background-image: url('img/referenced_in.svg') } */
-/* .relation.references_one { background-image: url('img/references_one.svg') } */
-/* .relation.references_many { background-image: url('img/references_many.svg') } */
-/* .relation.references_and_referenced_in_many { background-image: url('img/references_and_referenced_in_many.svg') } */
-/* .relation.embedded_in { background-image: url('img/embedded_in.svg') } */
-/* .relation.embeds_one { background-image: url('img/embeds_on.svg') } */
-/* .relation.embeds_many { background-image: url('img/embeds_many.svg') } */
-
 .info {
   font-size: 9px;
 }
