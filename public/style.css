@@ -1,0 +1,75 @@
+
+#paper {
+  width: 2500px;
+  height: 2500px;
+  border: 1px solid gray;
+}
+
+body.erd-model {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+.content.postgres { background-image: url('img/postgres-sm.png') }
+.content.mongo { background-image: url('img/mongo-sm.png') }
+.content.postgres { background-color: yellow; }
+.content.mongo { background-color: orange; }
+
+img.relation {
+  width: 10px;
+  height: 10px;
+  padding-right: 3px;
+}
+
+
+/* .relation.referenced_in { background-image: url('img/referenced_in.svg') } */
+/* .relation.references_one { background-image: url('img/references_one.svg') } */
+/* .relation.references_many { background-image: url('img/references_many.svg') } */
+/* .relation.references_and_referenced_in_many { background-image: url('img/references_and_referenced_in_many.svg') } */
+/* .relation.embedded_in { background-image: url('img/embedded_in.svg') } */
+/* .relation.embeds_one { background-image: url('img/embeds_on.svg') } */
+/* .relation.embeds_many { background-image: url('img/embeds_many.svg') } */
+
+.info {
+  font-size: 9px;
+}
+
+.erd-model {
+  border: 1px solid yellow;
+}
+
+h4.header {
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+h5 {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  padding: 0 0 .5em .5em;
+  margin: 0;
+}
+
+ul li {
+  font-size: 10px;
+  font-family: courier;
+  margin: 0;
+  list-style: none;
+}
+
+.modelName {
+  fill: #ff0;
+}

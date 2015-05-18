@@ -3,26 +3,24 @@
   <head>
     <meta charset="utf8"/>
 
-    <title>Basic shapes</title>
+    <title>ERD</title>
 
-    <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" type="text/css" href="dist/joint.css" />
-
-    <style>
-      #paper {
-        width: 2500px;
-        height: 2500px;
-        border: 1px solid gray;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <button onclick="zoomIn()">Zoom In</button>
     <button onclick="zoomOut()">Zoom Out</button>
+    <button onclick="loadFile()">LoadJson</button>
+    <input id="loadFile" type="text" value="models" />
+    <button onclick="save()">Save</button>
+    <button onclick="loadDb()">LoadDb</button>
+    <input id="db-name" type="text" value="stat_ngin" />
 
     <div id="paper"></div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="dist/joint.js"></script>
     <script src="joint.shapes.erd.js"></script>
     <script src="stat_ngin_models.js"></script>
