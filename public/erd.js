@@ -49,13 +49,15 @@ var element = function(elm, model, label) {
     return '<li class="' + relation.type +'"><img class="relation" src="img/' + relation.relationshipType + '.svg" />' + relation.accessor + ' [' + relation.class + ']</li>';
   });
 
-  var childrenHtml = model.children.length > 0 ?  '<div class="info"> Children: ' + model.children + '</div>' : '';
+  var childrenLi = _.map(model.children, function(child) {
+    return '<li><h5>' + child + '</h5></li>';
+  });
 
   var html =
     '<h4 class="header ' + model.db + '">' + model.name + '</h4>' +
+    '<ul class="child-klasses">' + childrenLi.join('') + '</ul>' +
     '<div class="content ' + model.db + '">' +
       '<div class="info">' + (model.table || model.collection) + '</div>' +
-      childrenHtml +
       '<h5>Relations</h5>' +
       '<ul class="relations">' + relLi.join('') + '</ul>' +
       '<h5>Attributes</h5>' +
@@ -69,8 +71,46 @@ var element = function(elm, model, label) {
   return cell;
 };
 
-var link = function(elm1, elm2) {
-  var myLink = new erd.Line({ source: { id: elm1.id }, target: { id: elm2.id }});
+var hasMany = { d: 'M 10 5 L 0 0 M 10 5 L 0 5 L 10 5 L 0 10 z', fill: 'none', 'stroke-width': '2px' };
+var embedsMany = { d: 'M 9,5 L 1,1 M 9,5 L 1,5 M 9,5 L 1,9 M 0,0 L 10,0 L 10,10 L 0,10 L 0,0 M 10,5 z', fill: 'none', 'stroke-width': '1.5px' };
+var embedsOne = { d: 'M 0,0 L 10,0 L 10,10 L 0,10 z', fill: 'none', 'stroke-width': '1.5px' };
+var embeddedIn = { d: 'M 0,0 L 10,0 L 10,10 L 0,10 z', fill: '#000'};
+var belongsTo = { d: 'M -5,0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0', fill: '#000' };
+var hasOne = { d: 'M -5,0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0', fill: 'none', 'stroke-width': '2px' };
+
+var linkDecoration = {
+  has_many: hasMany,
+  embeds_many: embedsMany,
+  embeds_one: embedsOne,
+  embedded_in: embeddedIn,
+  belongs_to: belongsTo,
+  belongs_to_record: belongsTo,
+  belongs_to_document: belongsTo,
+  referenced_in: belongsTo,
+  has_one: hasOne,
+  references_one: hasOne,
+  references_many: hasMany,
+  references_and_referenced_in_many: hasMany,
+  has_many_documents: hasMany,
+  has_many_records: hasMany,
+}
+
+var link = function(linkDesc) {
+
+  var sourceDecoration = linkDecoration[linkDesc.r1] || {};
+  var targetDecoration = linkDecoration[linkDesc.r2] || {};
+  console.log('source', sourceDecoration, 'target', targetDecoration);
+  if(JSON.stringify(sourceDecoration) == '{}') debugger;
+  var myLink = new erd.Line({
+    source: { id: linkDesc.m1 },
+    target: { id: linkDesc.m2 },
+    attrs: {
+      '.marker-source': sourceDecoration,
+      '.marker-target': targetDecoration
+    }
+  });
+
+  // myLink.set('router', { name: 'manhattan' });
   graph.addCell(myLink);
   return myLink;
 };
@@ -90,13 +130,35 @@ function makeJointModels(models, classJointHash) {
   });
 
   // Link all relationships
+  var linkHashMap = {};
   _.each(models, function(model) {
     _.each(model.relations, function(relation) {
-      var relateModel = classJointHash[relation.class]
-      if(relateModel) {
-        link(model.jointModel, relateModel.jointModel).cardinality(relation.relationshipType)
+      var relatedModel = classJointHash[relation.class]
+      if(relatedModel) {
+        var reverseRelation = _.find(relatedModel.relations, function(relation) {
+          return relation.class == model.name;
+        });
+        var reverseType = 'unknown';
+        if(reverseRelation) reverseType = reverseRelation.relationshipType;
+
+        var m1 = model.jointModel.id;
+        var m2 = relatedModel.jointModel.id;
+        var r1 = relation.relationshipType;
+        var r2 = reverseType;
+        // HackishHashMap
+        var desc = JSON.stringify({ m1: m1, r1: r1, m2: m2, r2: r2 });
+        var desc_reverse = JSON.stringify({ m1: m2, r1: r2, m2: m1, r2: r1 });
+        if(!linkHashMap[desc] && !linkHashMap[desc_reverse]) {
+          linkHashMap[desc] = true;
+        }
       }
     });
+  });
+
+  // deserialize pando's box, and link each descriptior
+  var links = _.keys(linkHashMap).map(function(a) { return JSON.parse(a); });
+  _.each(links, function(linkDesc) {
+    link(linkDesc);
   });
 }
 

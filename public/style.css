@@ -49,6 +49,14 @@ h5 {
   padding: 0;
 }
 
+.child-klasses {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: #eee;
+  background-color: #444;
+}
+
 ul {
   padding: 0 0 .5em .5em;
   margin: 0;
