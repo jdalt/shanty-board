@@ -1,8 +1,8 @@
 
 #paper {
-  width: 2500px;
-  height: 2500px;
-  border: 1px solid gray;
+  width: 10000px;
+  height: 10000px;
+  border-top: 1px solid gray;
 }
 
 body.erd-model {

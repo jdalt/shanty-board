@@ -3,7 +3,7 @@ var monk = require('monk');
 var db =  monk('localhost:27017/erd');
 var app = new express();
 var bodyParser = require('body-parser')
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb'}))
 
 app.use(express.json());
 
