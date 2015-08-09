@@ -1,4 +1,4 @@
-angular.module('draggable', [])
+angular.module('svg.draggable', [])
 .directive('draggable', ['$document', function($document) {
   return {
     restrict: 'A',

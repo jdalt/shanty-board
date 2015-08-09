@@ -13,25 +13,37 @@
     <div id="erd" ng-controller="ErdCtrl as erd">
       <svg svg-pan svg-zoom width="100%" height="800">
         <g class="foo">
-          <foreignObject class="entity" x="50" y="50" width="150" height="50">
+          <foreignObject has-child-height class="entity" x="50" y="50" width="150">
             <body>
               <div class="thought-container">
                 <p>Hello this is a thing</p>
                 <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
+                <div>Thing thing</div>
                 <br>
                 <textarea>Moar text</textarea>
+                <div>Thing thing</div>
+                <br>
               </div>
             </body>
           </foreignObject>
         </g>
         <g class="foo">
-          <foreignObject class="entity" x="350" y="150" width="150" height="50">
+          <foreignObject draggable has-child-height class="entity" x="350" y="150" width="150">
             <body>
               <div class="thought-container">
                 <p>Hello this is a thing</p>
                 <div>Thing thing</div>
                 <br>
                 <textarea>Moar text</textarea>
+                <div>Thing thing</div>
+                <br>
               </div>
             </body>
           </foreignObject>
@@ -45,11 +57,11 @@
     <script src="/js/angular-wrappers.js"></script>
 
     <!-- Directives Lib -->
-    <script src="/lib/draggable/draggable.js"></script>
     <script src="/lib/svg-tools/module.js"></script>
     <script src="/lib/svg-tools/svg-pan.js"></script>
     <script src="/lib/svg-tools/svg-height-updater.js"></script>
     <script src="/lib/svg-tools/svg-zoom.js"></script>
+    <script src="/lib/svg-tools/draggable.js"></script>
 
     <!-- Directives Local -->
 

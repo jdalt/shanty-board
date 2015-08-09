@@ -24,7 +24,6 @@
   "dependencies": {
     "angular": "~1.4.3",
     "lodash": "~3.10.1",
-    "draggable": "../../js_pkg/draggable",
     "svg-tools": "../../js_pkg/svg-tools/"
   },
   "install": {
@@ -32,7 +31,6 @@
     "sources": {
       "angular": "bower_components/angular/angular.js",
       "lodash": "bower_components/lodash/lodash.js",
-      "draggable": "bower_components/draggable/draggable.js",
       "svg-tools": "bower_components/svg-tools/*.js"
     }
   }
