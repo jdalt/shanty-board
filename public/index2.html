@@ -6,12 +6,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="style2.css" />
   </head>
   <body>
     <span>Smoke: {{ "O" + "K" }}</span>
     <div id="erd" ng-controller="ErdCtrl as erd">
       <svg svg-pan svg-zoom width="100%" height="800">
+        <g class="foo">
+          <foreignObject class="entity" x="50" y="50" width="150" height="50">
+            <body>
+              <div class="thought-container">
+                <p>Hello this is a thing</p>
+                <div>Thing thing</div>
+                <br>
+                <textarea>Moar text</textarea>
+              </div>
+            </body>
+          </foreignObject>
+        </g>
+        <g class="foo">
+          <foreignObject class="entity" x="350" y="150" width="150" height="50">
+            <body>
+              <div class="thought-container">
+                <p>Hello this is a thing</p>
+                <div>Thing thing</div>
+                <br>
+                <textarea>Moar text</textarea>
+              </div>
+            </body>
+          </foreignObject>
+        </g>
       </svg>
     </div>
 

@@ -1,4 +1,4 @@
-angular.module('svg.tools', [])
+angular.module('svg.zoom', [])
 .directive('svgZoom', [function() {
   return function($scope, element, attr) {
     var el = element[0];
