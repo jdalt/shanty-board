@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="shanty-board">
+  <head>
+    <title>ERD Shanty Board</title>
+    <base href="/">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="main">
+      Smoke 2: {{ 1 + 1 }}
+      <div ng-controller="ErdCtrl as erd">
+        {{ erd.test }}
+      </div>
+    </div>
+
+    <!-- Vendor -->
+    <script src="/lib/angular/angular.js"></script>
+    <script src="/lib/lodash/lodash.js"></script>
+    <script src="/js/angular-wrappers.js"></script>
+
+    <!-- Directives Lib -->
+    <script src="/lib/draggable/draggable.js"></script>
+    <script src="/lib/svg-tools/module.js"></script>
+    <script src="/lib/svg-tools/svg-pan.js"></script>
+    <script src="/lib/svg-tools/svg-height-updater.js"></script>
+
+    <!-- Directives Local -->
+
+    <!-- App -->
+    <script src="/js/app.js"></script>
+
+    <!-- Controllers -->
+    <script src="/js/erd/erd-ctrl.js"></script>
+
+  </body>
+</html>
+
