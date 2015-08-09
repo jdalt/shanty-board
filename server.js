@@ -11,7 +11,7 @@ app.use(express.static(__dirname + '/public'));
 
 db.get('erd').index('name', { unique: true });
 
-app.get('/erd/:name', function (req, res) {
+app.get('/erd-blob/:name', function (req, res) {
   console.log('get /erd received');
   var collection = db.get('erd');
   collection.findOne( { name: req.params.name }, function(err, data) {
