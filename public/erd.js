@@ -4,7 +4,7 @@ var paper = new joint.dia.Paper({
   el: $('#paper'),
   width: 10000,
   height: 10000,
-  gridSize: 1,
+  gridSize: 5,
   model: graph
 });
 
@@ -17,8 +17,6 @@ function zoomOut() {
   zoomFactor *= .9;
   paper.scale(zoomFactor, zoomFactor);
 }
-
-var erd = joint.shapes.erd;
 
 var MAX_WIDTH = 2500;
 var MODEL_WIDTH = 150;
@@ -39,9 +37,22 @@ function nextY() {
   return ny;
 }
 
-var element = function(elm, model, label) {
+function element(elm, model, label) {
   var position = model.position || { x: nextX(), y: nextY() }
-  var cell = new elm({ position: position, attrs: { '.klass': { text: label }}});
+
+  var estimatedHeight = (model.relations.length * 12) + (model.children.length * 14) + (model.fields.length * 12) + 80;
+  var cell = new elm({
+    linkCount: 0,
+    position: position,
+    size: { height: estimatedHeight, width: MODEL_WIDTH },
+    inPorts: ['in1','in2'],
+    outPorts: ['out'],
+    attrs: {
+      '.klass': { text: label }, // TODO: get rid of, clean up fn sig
+      '.inPorts circle': { fill: '#16A085', magnet: 'passive', type: 'input' },
+      '.outPorts circle': { fill: '#E74C3C', type: 'output' }
+    }
+  });
 
   // type, relationshipType, class, accessor
   var relLi = _.map(model.relations, function(relation) {
@@ -54,9 +65,9 @@ var element = function(elm, model, label) {
   });
 
   var html =
-    '<h4 class="header ' + model.db + '">' + model.name + '</h4>' +
+    '<h4 class="header">' + model.name + '</h4>' +
     '<ul class="child-klasses">' + childrenLi.join('') + '</ul>' +
-    '<div class="content ' + model.db + '">' +
+    '<div class="content">' +
       '<div class="info">' + (model.table || model.collection) + '</div>' +
       '<h5>Relations</h5>' +
       '<ul class="relations">' + relLi.join('') + '</ul>' +
@@ -65,7 +76,10 @@ var element = function(elm, model, label) {
     '</div>';
 
   var styleSheet = '<link href="style.css" type="text/css" rel="stylesheet" xmlns="http://www.w3.org/1999/xhtml"/>';
-  var markup = '<g class="rotatable"><g class="scalable"><polygon class="outer"/><polygon class="inner"/></g><foreignObject class="node" width="' +  MODEL_WIDTH + '" height="' + MODEL_HEIGHT + '">' + styleSheet + '<body class="erd-model" xmlns="http://www.w3.org/1999/xhtml">' + html + '</body></foreignObject></g>';
+  var markup = '' +
+      '<foreignObject class="node" width="' +  MODEL_WIDTH + '" height="' + estimatedHeight + '">' +
+          styleSheet + '<body class="erd-model ' + model.db + '" xmlns="http://www.w3.org/1999/xhtml">' + html + '</body>' +
+      '</foreignObject>';
   cell.markup = markup;
   graph.addCell(cell);
   return cell;
@@ -95,22 +109,26 @@ var linkDecoration = {
   has_many_records: hasMany,
 }
 
-var link = function(linkDesc) {
-
+function link(linkDesc) {
   var sourceDecoration = linkDecoration[linkDesc.r1] || {};
   var targetDecoration = linkDecoration[linkDesc.r2] || {};
   console.log('source', sourceDecoration, 'target', targetDecoration);
-  if(JSON.stringify(sourceDecoration) == '{}') debugger;
-  var myLink = new erd.Line({
+  // if(JSON.stringify(sourceDecoration) == '{}') debugger;
+
+  var target = graph.getCell(linkDesc.m2);
+  var port = target.linkCount;
+  target.linkCount += 1;
+  var myLink = new joint.dia.Link({
     source: { id: linkDesc.m1 },
     target: { id: linkDesc.m2 },
+    router: { name: 'manhattan' },
+    connector: { name: 'rounded' },
+    port: port,
     attrs: {
       '.marker-source': sourceDecoration,
       '.marker-target': targetDecoration
     }
   });
-
-  // myLink.set('router', { name: 'manhattan' });
   graph.addCell(myLink);
   return myLink;
 };
@@ -124,9 +142,10 @@ function processModels(models) {
   return classJointHash;
 }
 
+var links;
 function makeJointModels(models, classJointHash) {
   _.each(models, function(model) {
-    model.jointModel = element(erd.Entity, model, model.name);
+    model.jointModel = element(joint.shapes.basic.Rect, model, model.name);
   });
 
   // Link all relationships
@@ -156,9 +175,9 @@ function makeJointModels(models, classJointHash) {
   });
 
   // deserialize pando's box, and link each descriptior
-  var links = _.keys(linkHashMap).map(function(a) { return JSON.parse(a); });
-  _.each(links, function(linkDesc) {
-    link(linkDesc);
+  var linkDescriptors = _.keys(linkHashMap).map(function(a) { return JSON.parse(a); });
+  links = _.map(linkDescriptors, function(linkDesc) {
+    return link(linkDesc);
   });
 }
 
@@ -211,6 +230,22 @@ function save() {
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
     success: function(data, textStatus, jqXHR) { console.log('success') }
+  });
+}
+
+var toggleOn = true;
+function toggleLinkRouting() {
+  toggleOn = !toggleOn;
+
+  _.each(links, function(link) {
+    if(toggleOn) {
+      link.set('router', { name: 'manhattan' });
+      link.set('connector', { name: 'rounded' });
+    } else {
+      link.unset('router');
+      link.unset('connector');
+    }
+    paper.findViewByModel(link).update();
   });
 }
 

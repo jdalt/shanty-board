@@ -8,6 +8,7 @@
 body.erd-model {
   margin: 0;
   padding: 0;
+  background-color: pink; /* default */
 }
 
 .content {
@@ -15,10 +16,12 @@ body.erd-model {
   background-repeat: no-repeat;
   background-position: top right;
 }
-.content.postgres { background-image: url('img/postgres-sm.png') }
-.content.mongo { background-image: url('img/mongo-sm.png') }
-.content.postgres { background-color: yellow; }
-.content.mongo { background-color: orange; }
+.postgres .content { background-image: url('img/postgres-sm.png') }
+.mongo .content { background-image: url('img/mongo-sm.png') }
+.mysql .content { background-image: url('img/mysql-sm.png') }
+body.erd-model.postgres { background-color: yellow; }
+body.erd-model.mongo { background-color: orange; }
+body.erd-model.mysql { background-color: green; }
 
 img.relation {
   width: 10px;
@@ -30,8 +33,10 @@ img.relation {
   font-size: 9px;
 }
 
-.erd-model {
-  border: 1px solid yellow;
+body.erd-model {
+  height: 99%;
+  border: 1px solid black;
+  box-shadow: 0 0 7px 7px #eee;
 }
 
 h4.header {
@@ -60,6 +65,7 @@ h5 {
 ul {
   padding: 0 0 .5em .5em;
   margin: 0;
+  overflow: hidden;
 }
 
 ul li {
@@ -67,6 +73,10 @@ ul li {
   font-family: courier;
   margin: 0;
   list-style: none;
+}
+
+.content ul li {
+  width: 500px;
 }
 
 .modelName {
