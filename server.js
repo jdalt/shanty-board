@@ -11,10 +11,10 @@ app.use(express.static(__dirname + '/public'));
 
 db.get('erd').index('name', { unique: true });
 
-app.get('/erd-blob/:name', function (req, res) {
+app.get('/erd-blob/:id', function (req, res) {
   console.log('get /erd received');
   var collection = db.get('erd');
-  collection.findOne( { name: req.params.name }, function(err, data) {
+  collection.findOne( { id: req.params.id }, function(err, data) {
     if(err) {
       res.json({status: 'error'});
     } else {
