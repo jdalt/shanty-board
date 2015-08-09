@@ -2,6 +2,9 @@ angular.module('svg.draggable', [])
 .directive('draggable', ['$document', function($document) {
   return {
     restrict: 'A',
+    scope: {
+      onDragFinish: '&'
+    },
     link: function($scope, element, attr) {
       var startX = 0, startY = 0;
 
@@ -33,10 +36,17 @@ angular.module('svg.draggable', [])
         el.setAttribute('y', elY)
       }
 
-      function mouseup() {
+      function mouseup(event) {
         $document.off('mousemove', mousemove);
         $document.off('mouseup', mouseup);
-        // TODO: invoke callback
+
+        var desc = {
+          element: el,
+          event: event,
+          x: parseInt(el.getAttribute('x')),
+          y: parseInt(el.getAttribute('y'))
+        }
+        $scope.onDragFinish({element: desc})
       }
     }
   }
