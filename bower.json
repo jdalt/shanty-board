@@ -7,23 +7,11 @@
   ],
   "description": "Digital shanty board for displaying ERDs",
   "main": "index.html",
-  "moduleType": [
-    "globals"
-  ],
-  "keywords": [
-    "app"
-  ],
   "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "dependencies": {
     "angular": "~1.4.3",
     "lodash": "~3.10.1",
+    "js-data-angular": "3.0.0",
     "svg-tools": "../../js_pkg/svg-tools/"
   },
   "install": {
@@ -31,6 +19,8 @@
     "sources": {
       "angular": "bower_components/angular/angular.js",
       "lodash": "bower_components/lodash/lodash.js",
+      "js-data": "bower_components/js-data/dist/js-data.js",
+      "js-data-http": "bower_components/js-data-http/dist/js-data-http.js",
       "svg-tools": "bower_components/svg-tools/*.js"
     }
   }
