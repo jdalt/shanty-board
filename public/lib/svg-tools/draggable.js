@@ -9,23 +9,20 @@ angular.module('svg.draggable', [])
       var startX = 0, startY = 0;
 
       var el = element[0];
-      var firstChild = element.children()[0];
       // if(el.tagName.toLowerCase() != 'foreignObject') return;
 
       element.on('mousedown', function(event) {
-        if(event.srcElement == event.currentTarget || event.srcElement == firstChild) {
-          // Prevent default dragging of selected content
-          event.preventDefault();
+        // Prevent default dragging of selected content
+        event.preventDefault();
 
-          var elX = parseInt(el.getAttribute('x'))
-          var elY = parseInt(el.getAttribute('y'))
+        var elX = parseInt(el.getAttribute('x'))
+        var elY = parseInt(el.getAttribute('y'))
 
-          startX = event.pageX - elX
-          startY = event.pageY - elY
+        startX = event.pageX - elX
+        startY = event.pageY - elY
 
-          $document.on('mousemove', mousemove);
-          $document.on('mouseup', mouseup);
-        }
+        $document.on('mousemove', mousemove);
+        $document.on('mouseup', mouseup);
       });
 
       function mousemove(event) {
