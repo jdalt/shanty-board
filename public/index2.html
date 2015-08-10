@@ -12,41 +12,8 @@
     <span>Smoke: {{ "O" + "K" }}</span>
     <div id="erd" ng-controller="ErdCtrl as erd">
       <svg svg-pan svg-zoom width="100%" height="800">
-        <g class="foo">
-          <foreignObject has-child-height class="entity" x="50" y="50" width="150">
-            <body>
-              <div class="thought-container">
-                <p>Hello this is a thing</p>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <div>Thing thing</div>
-                <br>
-                <textarea>Moar text</textarea>
-                <div>Thing thing</div>
-                <br>
-              </div>
-            </body>
-          </foreignObject>
-        </g>
-        <g class="foo">
-          <foreignObject draggable on-drag-finish="erd.sayHi(element)" has-child-height class="entity" x="350" y="150" width="150">
-            <body>
-              <div class="thought-container">
-                <p>Hello this is a thing</p>
-                <div>Thing thing</div>
-                <br>
-                <textarea>Moar text</textarea>
-                <div>Thing thing</div>
-                <br>
-              </div>
-            </body>
-          </foreignObject>
+        <g ng-repeat="model in erd.models"
+          entity="model">
         </g>
       </svg>
     </div>
@@ -74,6 +41,7 @@
 
     <!-- Controllers -->
     <script src="/js/erd/erd-ctrl.js"></script>
+    <script src="/js/erd/entity-directive.js"></script>
 
   </body>
 </html>
