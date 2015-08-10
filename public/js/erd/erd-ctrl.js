@@ -4,7 +4,6 @@ angular.module('erd')
 
   ErdBlob.find('stat_ngin').then(function(erdBlob) {
     ctrl.models = erdBlob.models
-    ctrl.dbName = erdBlob.name
   })
 
   ctrl.sayHi = function(element) {
