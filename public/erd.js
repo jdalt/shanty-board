@@ -196,7 +196,7 @@ function loadFile() {
 }
 
 function loadDb() {
-  var url = '/erd/' + $('#db-name').val();
+  var url = '/erd-blob/' + $('#db-name').val();
   loadJson(url);
 }
 
