@@ -1,14 +1,9 @@
 angular.module('erd')
-.controller('ErdCtrl', function($scope, ErdBlob) {
+.controller('ErdCtrl', function($scope, Entity) {
   var ctrl = this
 
-  ErdBlob.find('stat_ngin').then(function(erdBlob) {
-    ctrl.models = erdBlob.models
+  Entity.findAll({app: 'stat_ngin'}).then(function(entities) {
+    ctrl.models = entities
   })
-
-  ctrl.sayHi = function(element) {
-    console.log('el', element)
-    console.log('drag finish')
-  }
 })
 

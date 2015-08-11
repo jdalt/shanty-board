@@ -1,8 +1,9 @@
 <foreignObject class="entity" width="150"
   draggable
+  on-drag-finish="move(position)"
   has-child-height
-  ng-attr-x="{{entity.position.x}}"
-  ng-attr-y="{{entity.position.y}}">
+  ng-attr-x="{{entity._meta.x}}"
+  ng-attr-y="{{entity._meta.y}}">
 <div class="erd-model {{entity.db}}">
   <h4 class="header">{{ entity.name }}</h4>
   <ul class="child-klasses">
@@ -14,7 +15,7 @@
     <div class="info">{{ (entity.table || entity.collection) }}</div>
     <h5>Relations</h5>
     <ul class="relations">
-      <li ng-repeat="relation in entity.relations" 
+      <li ng-repeat="relation in entity.relations"
       class="{{relation.type">
       <img class="relation" src="img/{{relation.relationshipType}}.svg" />
       {{ relation.accessor }} [{{relation.class}}]
