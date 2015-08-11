@@ -222,10 +222,10 @@ function save() {
   });
 
   var save_name = $('#db-name').val();
-  var postData = { name: save_name, models: cleanModels };
+  var postData = { app: save_name, models: cleanModels, version: 1 };
   $.ajax({
-    url: '/erd/' + save_name,
-    type: 'PUT',
+    url: '/erd/',
+    type: 'POST',
     data: JSON.stringify(postData),
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
