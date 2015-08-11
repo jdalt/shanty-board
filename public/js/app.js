@@ -2,4 +2,4 @@
 
 angular.module('shanty-board', ['erd'])
 
-angular.module('erd', ['svg.tools', 'util', 'erd-blob'])
+angular.module('erd', ['svg.tools', 'util', 'models'])
