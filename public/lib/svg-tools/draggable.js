@@ -37,13 +37,13 @@ angular.module('svg.draggable', [])
         $document.off('mousemove', mousemove);
         $document.off('mouseup', mouseup);
 
-        var desc = {
+        var pos = {
           element: el,
           event: event,
           x: parseInt(el.getAttribute('x')),
           y: parseInt(el.getAttribute('y'))
         }
-        $scope.onDragFinish({element: desc})
+        $scope.onDragFinish({position: pos})
       }
     }
   }
