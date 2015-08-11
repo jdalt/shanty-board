@@ -6,31 +6,40 @@ angular.module('svg.draggable', [])
       onDragFinish: '&'
     },
     link: function($scope, element, attr) {
-      var startX = 0, startY = 0;
+      var el = element[0]
+      var svg = el.viewportElement
+      if(svg == undefined) return;
 
-      var el = element[0];
-      // if(el.tagName.toLowerCase() != 'foreignObject') return;
+      // Helper method
+      function cursorPoint(evt) {
+        var pt = svg.createSVGPoint();
+        pt.x = evt.clientX; pt.y = evt.clientY;
+        return pt.matrixTransform(svg.getScreenCTM().inverse());
+      }
 
+      var elInitX, elInitY, mouseInitX, mouseInitY;
       element.on('mousedown', function(event) {
         // Prevent default dragging of selected content
         event.preventDefault();
 
-        var elX = parseInt(el.getAttribute('x'))
-        var elY = parseInt(el.getAttribute('y'))
+        elInitX = parseInt(el.getAttribute('x'))
+        elInitY = parseInt(el.getAttribute('y'))
 
-        startX = event.pageX - elX
-        startY = event.pageY - elY
+        var curPt = cursorPoint(event)
+        mouseInitX = curPt.x
+        mouseInitY = curPt.y
 
         $document.on('mousemove', mousemove);
         $document.on('mouseup', mouseup);
       });
 
       function mousemove(event) {
-        elX = event.pageX - startX;
-        elY = event.pageY - startY;
+        var curPt = cursorPoint(event)
+        var deltaX = mouseInitX - curPt.x
+        var deltaY = mouseInitY - curPt.y
 
-        el.setAttribute('x', elX)
-        el.setAttribute('y', elY)
+        el.setAttribute('x', elInitX - deltaX)
+        el.setAttribute('y', elInitY - deltaY)
       }
 
       function mouseup(event) {
