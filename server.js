@@ -99,6 +99,24 @@ function insertMeta(models, res) {
       res.json({status: "success"});
     }
   });
+
+}
+
+app.put('/app/:app/entities/:name', function (req, res) {
+  console.log('post received');
+  var collection = db.get('meta-models');
+  var meta = req.body._meta
+  meta.app = req.body.app
+  meta.name = req.body.name
+  collection.update( { name: req.params.name, app: req.params.app }, meta, {upsert: true}, function(err, data) {
+    if(err) {
+      console.log('error', err);
+      res.json({status: "error", error: err});
+    } else {
+      console.log('success');
+      res.json(req.body)
+    }
+  });
 });
 
 var port = Number(process.env.PORT || 3000);
