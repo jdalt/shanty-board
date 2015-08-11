@@ -25,6 +25,37 @@ app.get('/erd-blob/:id', function (req, res) {
   });
 });
 
+app.get('/app/:app/entities', function (req, res) {
+  console.log('get /models received');
+
+  db.get('meta-models').find( { app: req.params.app }, function(err, metaModels) {
+    if(err) {
+      res.json({status: 'error'});
+    } else {
+      var metaModelHash = {}
+      _.each(metaModels, function(meta) {
+        return metaModelHash[meta.name] = _.omit(meta, ['app', 'name', '_id'])
+      })
+      getModelsAndZip(app, metaModelHash, res)
+    }
+  });
+});
+
+function getModelsAndZip(app, metaHash, res) {
+  var modelsCollection = db.get('models');
+  modelsCollection.find({ app: app }, function(err, models) {
+    if(err) {
+      res.json({status: 'error'});
+    } else {
+      var zippedModels = _.map(models, function(model) {
+        model._meta = metaHash[model.name]
+        return model
+      })
+      res.json(zippedModels)
+    }
+  });
+}
+
 app.post('/erd', function (req, res) {
   console.log('post received');
   var collection = db.get('models');
