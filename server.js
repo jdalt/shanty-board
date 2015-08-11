@@ -3,6 +3,8 @@ var monk = require('monk');
 var db =  monk('localhost:27017/erd');
 var app = new express();
 var bodyParser = require('body-parser')
+var _ = require('lodash')
+
 app.use(bodyParser.json({limit: '50mb'}))
 
 app.use(express.json());
@@ -25,22 +27,39 @@ app.get('/erd-blob/:id', function (req, res) {
 
 app.post('/erd', function (req, res) {
   console.log('post received');
-  var collection = db.get('erd');
-  collection.insert(req.body, function(err, data) {
+  var collection = db.get('models');
+  console.log(req.body.models);
+
+  var app = req.body.app
+  var version = req.body.version
+  var denormModels = _.map(req.body.models, function(model) {
+    model.app = app
+    model.version = version
+    return model
+  })
+  collection.insert(denormModels, function(err, data) {
     if(err) {
       console.log('error', err);
       res.json({status: "error", error: err});
     } else {
       console.log('success');
-      res.json({status: "success"});
+      insertMeta(denormModels, res)
     }
   });
 });
 
-app.put('/erd/:name', function (req, res) {
-  console.log('post received');
-  var collection = db.get('erd');
-  collection.update( { name: req.params.name }, req.body, {upsert: true}, function(err, data) {
+function insertMeta(models, res) {
+  var collection = db.get('meta-models');
+  var metaModels = _.map(models, function(model) {
+    return {
+      name: model.name,
+      app: model.app,
+      x: model.position.x,
+      y: model.position.y
+    }
+  })
+
+  collection.insert(metaModels, function(err, data) {
     if(err) {
       console.log('error', err);
       res.json({status: "error", error: err});
