@@ -9,11 +9,17 @@
     <link rel="stylesheet" href="style2.css" />
   </head>
   <body>
-    <span>Smoke: {{ "O" + "K" }}</span>
     <div id="erd" ng-controller="ErdCtrl as erd">
-      <svg svg-pan svg-zoom width="100%" height="800">
-        <g ng-repeat="model in erd.models"
-          entity="model">
+      <svg width="100%">
+        <g svg-zoom svg-pan>
+          <g ng-repeat="model in erd.models"
+            entity="model">
+          </g>
+          <circle cx="2518" cy="2834" r="5" fill="black" />
+          <circle cx="5036" cy="5668" r="5" fill="black" />
+          <circle cx="0" cy="5668" r="5" fill="black" />
+          <circle cx="5036" cy="0" r="5" fill="black" />
+          <circle cx="0" cy="0" r="5" fill="black" />
         </g>
       </svg>
     </div>
